@@ -1,4 +1,5 @@
 import express from "express"
+import dotenv from 'dotenv'
 import oilPriceService from './services/oilpriceService'
 import bitsService from './services/bitsService'
 import { oilPrice } from './models/oilprice'
@@ -21,6 +22,7 @@ const app = express()
 // middlewares
 app.use(express.json())
 
+dotenv.config()
 
 const addOilPrice = () => {
     request({
