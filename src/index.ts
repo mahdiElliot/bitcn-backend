@@ -76,6 +76,9 @@ const start = async () => {
         app.listen(port, () => {
 
         })
+        app.get('/', (req, res) => {
+            res.status(200).send("hello world!");
+        })
     } catch (e) {
         console.log(e)
         process.exit(1)
