@@ -1,5 +1,7 @@
 import express from "express"
 import dotenv from 'dotenv'
+dotenv.config()
+
 import oilPriceService from './services/oilpriceService'
 import bitsService from './services/bitsService'
 import { oilPrice } from './models/oilprice'
@@ -15,12 +17,10 @@ import Gemini from "./models/gemini"
 import Poloniex from "./models/poloniex"
 import Itbit from "./models/itbit"
 
-dotenv.config()
-
 const port = process.env.PORT || 8081
 
 const app = express()
-
+console.log(process.env.COIN_DB_USER)
 // middlewares
 app.use(express.json())
 
@@ -50,14 +50,6 @@ const addBits = (name: string, Exchange: any) => {
         .pipe(csv())
         .on('data', it => {
             csvData.push(it)
-            // try {
-            //     bitsService.save(
-            //         { timestamp: it.unix, symbol: it.symbol, open: it.open, high: it.high, low: it.low, close: it.close, volume_USD: it['Volume USD'], volume_BTC: it['Volume BTC'] },
-            //         Exchange
-            //     )
-            // } catch (e) {
-            //     throw e
-            // }
         }).on('end', () => {
             try {
                 bitsService.saveList(
