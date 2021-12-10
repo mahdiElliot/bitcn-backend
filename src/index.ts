@@ -74,8 +74,8 @@ const start = async () => {
         await sequelize.sync()
 
         // addOilPrice()
-        addBits('docs/Bitfinex_BTCUSD_1h.csv', Bitfinex)
-        // addBits('docs/Bitstamp_BTCUSD_1h.csv', Bitstamp)
+        // addBits('docs/Bitfinex_BTCUSD_1h.csv', Bitfinex)
+        addBits('docs/Bitstamp_BTCUSD_1h.csv', Bitstamp)
         // addBits('docs/Bittrex_BTCUSD_1h.csv', Bittrex)
         // addBits('docs/gemini_BTCUSD_1hr.csv', Gemini)
         // addBits('docs/Poloniex_BTCUSDT_1h.csv', Poloniex)
