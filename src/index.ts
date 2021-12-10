@@ -15,6 +15,8 @@ import Gemini from "./models/gemini"
 import Poloniex from "./models/poloniex"
 import Itbit from "./models/itbit"
 
+dotenv.config()
+
 const port = process.env.PORT || 8081
 
 const app = express()
@@ -22,7 +24,6 @@ const app = express()
 // middlewares
 app.use(express.json())
 
-dotenv.config()
 
 const addOilPrice = () => {
     request({
