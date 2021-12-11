@@ -69,8 +69,8 @@ const start = async () => {
         // addBits('docs/Bitfinex_BTCUSD_1h.csv', Bitfinex)
         // addBits('docs/Bitstamp_BTCUSD_1h.csv', Bitstamp)
         // addBits('docs/Bittrex_BTCUSD_1h.csv', Bittrex)
-        // addBits('docs/Poloniex_BTCUSDT_1h.csv', Poloniex)
-        addBits('docs/Itbit_BTCUSD_1h.csv', Itbit)
+        addBits('docs/Poloniex_BTCUSDT_1h.csv', Poloniex)
+        // addBits('docs/Itbit_BTCUSD_1h.csv', Itbit)
         // app.listen(port, () => {
 
         // })
