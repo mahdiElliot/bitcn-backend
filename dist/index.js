@@ -17,58 +17,29 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const oilpriceService_1 = __importDefault(require("./services/oilpriceService"));
 const bitsService_1 = __importDefault(require("./services/bitsService"));
-const utils_1 = __importDefault(require("./utils/utils"));
-const request_1 = __importDefault(require("request"));
+const functions_1 = __importDefault(require("./utils/functions"));
 const index_1 = __importDefault(require("./db/index"));
-const fs_1 = __importDefault(require("fs"));
-const csv_parser_1 = __importDefault(require("csv-parser"));
+const bitfinex_1 = __importDefault(require("./models/bitfinex"));
+const bitstamp_1 = __importDefault(require("./models/bitstamp"));
+const bittrex_1 = __importDefault(require("./models/bittrex"));
+const poloniex_1 = __importDefault(require("./models/poloniex"));
+const itbit_1 = __importDefault(require("./models/itbit"));
 const port = process.env.PORT || 8081;
 const app = (0, express_1.default)();
 // middlewares
 app.use(express_1.default.json());
-const addOilPrice = () => {
-    (0, request_1.default)({
-        uri: utils_1.default.oil_api_url_data(),
-        headers: {
-            'Authorization': `Token ${utils_1.default.oil_token()}`,
-            'Content-Type': 'application/json'
-        }
-    }, (error, response, body) => {
-        const data = JSON.parse(body);
-        if (data.status === 'success') {
-            const prices = data.data.prices;
-            oilpriceService_1.default.saveList(prices.map(it => (Object.assign(Object.assign({}, it), { created_at: Date.parse(it.created_at) }))));
-        }
-        else {
-            console.log(error);
-            process.exit(1);
-        }
-    });
-};
-const addBits = (name, Exchange) => {
-    const csvData = [];
-    fs_1.default.createReadStream(name)
-        .pipe((0, csv_parser_1.default)())
-        .on('data', it => {
-        csvData.push(it);
-    }).on('end', () => {
-        try {
-            bitsService_1.default.saveList(csvData.map(it => ({ timestamp: it.unix || it['Unix Timestamp'], symbol: it.symbol || it.Symbol, open: it.open || it.Open, high: it.high || it.High, low: it.low || it.Low, close: it.close || it.Close, volume_USD: it['Volume USD'], volume_BTC: it['Volume BTC'] })), Exchange);
-        }
-        catch (e) {
-            throw e;
-        }
-    });
+const initDatabaseTables = () => {
+    functions_1.default.addOilPrice(oilpriceService_1.default);
+    functions_1.default.addBits('docs/Bitfinex_BTCUSD_1h.csv', bitfinex_1.default, bitsService_1.default);
+    functions_1.default.addBits('docs/Bitstamp_BTCUSD_1h.csv', bitstamp_1.default, bitsService_1.default);
+    functions_1.default.addBits('docs/Bittrex_BTCUSD_1h.csv', bittrex_1.default, bitsService_1.default);
+    functions_1.default.addBits('docs/Poloniex_BTCUSDT_1h.csv', poloniex_1.default, bitsService_1.default);
+    functions_1.default.addBits('docs/Itbit_BTCUSD_1h.csv', itbit_1.default, bitsService_1.default);
 };
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield index_1.default.sync();
-        // addOilPrice()
-        // addBits('docs/Bitfinex_BTCUSD_1h.csv', Bitfinex)
-        // addBits('docs/Bitstamp_BTCUSD_1h.csv', Bitstamp)
-        // addBits('docs/Bittrex_BTCUSD_1h.csv', Bittrex)
-        // addBits('docs/Poloniex_BTCUSDT_1h.csv', Poloniex)
-        // addBits('docs/Itbit_BTCUSD_1h.csv', Itbit)
+        // initDatabaseTables()
         app.listen(port, () => {
         });
         app.get('/', (req, res) => {
