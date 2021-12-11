@@ -22,7 +22,9 @@ const request_1 = __importDefault(require("request"));
 const index_1 = __importDefault(require("./db/index"));
 const fs_1 = __importDefault(require("fs"));
 const csv_parser_1 = __importDefault(require("csv-parser"));
-const bittrex_1 = __importDefault(require("./models/bittrex"));
+const gemini_1 = __importDefault(require("./models/gemini"));
+const poloniex_1 = __importDefault(require("./models/poloniex"));
+const itbit_1 = __importDefault(require("./models/itbit"));
 const port = process.env.PORT || 8081;
 const app = (0, express_1.default)();
 // middlewares
@@ -67,14 +69,14 @@ const start = () => __awaiter(void 0, void 0, void 0, function* () {
         // addOilPrice()
         // addBits('docs/Bitfinex_BTCUSD_1h.csv', Bitfinex)
         // addBits('docs/Bitstamp_BTCUSD_1h.csv', Bitstamp)
-        addBits('docs/Bittrex_BTCUSD_1h.csv', bittrex_1.default);
-        // addBits('docs/gemini_BTCUSD_1hr.csv', Gemini)
-        // addBits('docs/Poloniex_BTCUSDT_1h.csv', Poloniex)
-        // addBits('docs/Itbit_BTCUSD_1h.csv', Itbit)
-        app.listen(port, () => {
-        });
-        app.get('/', (req, res) => {
-        });
+        // addBits('docs/Bittrex_BTCUSD_1h.csv', Bittrex)
+        addBits('docs/gemini_BTCUSD_1hr.csv', gemini_1.default);
+        addBits('docs/Poloniex_BTCUSDT_1h.csv', poloniex_1.default);
+        addBits('docs/Itbit_BTCUSD_1h.csv', itbit_1.default);
+        // app.listen(port, () => {
+        // })
+        // app.get('/', (req, res) => {
+        // })
     }
     catch (e) {
         console.log(e);
