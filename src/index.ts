@@ -13,7 +13,6 @@ import csv from 'csv-parser'
 import Bitfinex from './models/bitfinex'
 import Bitstamp from "./models/bitstamp"
 import Bittrex from "./models/bittrex"
-import Gemini from "./models/gemini"
 import Poloniex from "./models/poloniex"
 import Itbit from "./models/itbit"
 
@@ -70,9 +69,8 @@ const start = async () => {
         // addBits('docs/Bitfinex_BTCUSD_1h.csv', Bitfinex)
         // addBits('docs/Bitstamp_BTCUSD_1h.csv', Bitstamp)
         // addBits('docs/Bittrex_BTCUSD_1h.csv', Bittrex)
-        addBits('docs/gemini_BTCUSD_1hr.csv', Gemini)
         addBits('docs/Poloniex_BTCUSDT_1h.csv', Poloniex)
-        // addBits('docs/Itbit_BTCUSD_1h.csv', Itbit)
+        addBits('docs/Itbit_BTCUSD_1h.csv', Itbit)
         // app.listen(port, () => {
 
         // })
