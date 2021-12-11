@@ -8,7 +8,8 @@ const config_1 = __importDefault(require("../config/config"));
 const sequelize = new sequelize_1.Sequelize(config_1.default.DB_DB, config_1.default.DB_USER, config_1.default.DB_PASS, {
     host: config_1.default.DB_HOST,
     port: Number(config_1.default.DB_PORT),
-    dialect: 'postgres'
+    dialect: 'postgres',
+    logging: process.env.MODE === 'dev'
 });
 exports.default = sequelize;
 //# sourceMappingURL=index.js.map
