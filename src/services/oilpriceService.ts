@@ -17,6 +17,17 @@ const saveList = async (list: oilPrice[]) => {
     }
 }
 
+const getAll = async () => {
+    let data = []
+    try {
+        data = await OilPrice.findAll()
+    } catch (e) {
+        throw new Errors.InternalError(errorMsgs.database_error())
+    }
+    return data
+}
+
 export default {
-    saveList
+    saveList,
+    getAll
 }

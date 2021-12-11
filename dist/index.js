@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
+const routes_1 = __importDefault(require("./routes"));
 const oilpriceService_1 = __importDefault(require("./services/oilpriceService"));
 const bitsService_1 = __importDefault(require("./services/bitsService"));
 const functions_1 = __importDefault(require("./utils/functions"));
@@ -28,6 +29,7 @@ const port = process.env.PORT || 8081;
 const app = (0, express_1.default)();
 // middlewares
 app.use(express_1.default.json());
+app.use('/api', routes_1.default);
 const initDatabaseTables = () => {
     functions_1.default.addOilPrice(oilpriceService_1.default);
     functions_1.default.addBits('docs/Bitfinex_BTCUSD_1h.csv', bitfinex_1.default, bitsService_1.default);
@@ -40,9 +42,9 @@ const start = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield index_1.default.sync();
         // initDatabaseTables()
-        app.listen(port, () => {
-        });
         app.get('/', (req, res) => {
+        });
+        app.listen(port, () => {
         });
     }
     catch (e) {

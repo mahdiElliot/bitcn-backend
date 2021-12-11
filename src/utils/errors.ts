@@ -1,4 +1,4 @@
-import ErrorCodes from './error-codes'
+import ErrorCodes from './status-codes'
 
 function InternalError(message: string){
     this.message = message

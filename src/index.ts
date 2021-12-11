@@ -2,6 +2,8 @@ import express from "express"
 import dotenv from 'dotenv'
 dotenv.config()
 
+import routes from './routes'
+
 import oilPriceService from './services/oilpriceService'
 import bitsService from './services/bitsService'
 import functions from './utils/functions'
@@ -18,6 +20,7 @@ const app = express()
 
 // middlewares
 app.use(express.json())
+app.use('/api', routes)
 
 const initDatabaseTables = () => {
     functions.addOilPrice(oilPriceService)
@@ -33,13 +36,14 @@ const start = async () => {
         await sequelize.sync()
 
         // initDatabaseTables()
+        app.get('/', (req, res) => {
+
+        })
 
         app.listen(port, () => {
 
         })
-        app.get('/', (req, res) => {
 
-        })
     } catch (e) {
         console.log(e)
         process.exit(1)
