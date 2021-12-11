@@ -53,7 +53,7 @@ const addBits = (name: string, Exchange: any) => {
         }).on('end', () => {
             try {
                 bitsService.saveList(
-                    csvData.map(it => ( { timestamp: it.unix, symbol: it.symbol, open: it.open, high: it.high, low: it.low, close: it.close, volume_USD: it['Volume USD'], volume_BTC: it['Volume BTC'] })),
+                    csvData.map(it => ( { timestamp: it.unix || it['Unix Timestamp'], symbol: it.symbol, open: it.open, high: it.high, low: it.low, close: it.close, volume_USD: it['Volume USD'], volume_BTC: it['Volume BTC'] })),
                     Exchange
                     )
             } catch(e){
