@@ -53,7 +53,7 @@ const addBits = (name: string, Exchange: any) => {
         }).on('end', () => {
             try {
                 bitsService.saveList(
-                    csvData.map(it => ( { timestamp: it.unix || it['Unix Timestamp'], symbol: it.symbol, open: it.open, high: it.high, low: it.low, close: it.close, volume_USD: it['Volume USD'], volume_BTC: it['Volume BTC'] })),
+                    csvData.map(it => ( { timestamp: it.unix || it['Unix Timestamp'], symbol: it.symbol || it.Symbol, open: it.open || it.Open, high: it.high || it.High, low: it.low || it.Low, close: it.close || it.Close, volume_USD: it['Volume USD'], volume_BTC: it['Volume BTC'] })),
                     Exchange
                     )
             } catch(e){
@@ -69,7 +69,7 @@ const start = async () => {
         // addOilPrice()
         // addBits('docs/Bitfinex_BTCUSD_1h.csv', Bitfinex)
         // addBits('docs/Bitstamp_BTCUSD_1h.csv', Bitstamp)
-        // addBits('docs/Bittrex_BTCUSD_1h.csv', Bittrex)
+        addBits('docs/Bittrex_BTCUSD_1h.csv', Bittrex)
         // addBits('docs/gemini_BTCUSD_1hr.csv', Gemini)
         // addBits('docs/Poloniex_BTCUSDT_1h.csv', Poloniex)
         // addBits('docs/Itbit_BTCUSD_1h.csv', Itbit)
@@ -77,7 +77,7 @@ const start = async () => {
 
         })
         app.get('/', (req, res) => {
-           
+
         })
     } catch (e) {
         console.log(e)

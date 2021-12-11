@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const oilpriceService_1 = __importDefault(require("./services/oilpriceService"));
 const bitsService_1 = __importDefault(require("./services/bitsService"));
 const utils_1 = __importDefault(require("./utils/utils"));
@@ -21,10 +22,9 @@ const request_1 = __importDefault(require("request"));
 const index_1 = __importDefault(require("./db/index"));
 const fs_1 = __importDefault(require("fs"));
 const csv_parser_1 = __importDefault(require("csv-parser"));
-dotenv_1.default.config({ path: './.env' });
+const bittrex_1 = __importDefault(require("./models/bittrex"));
 const port = process.env.PORT || 8081;
 const app = (0, express_1.default)();
-console.log(process.env.COIN_DB_USER);
 // middlewares
 app.use(express_1.default.json());
 const addOilPrice = () => {
@@ -52,17 +52,9 @@ const addBits = (name, Exchange) => {
         .pipe((0, csv_parser_1.default)())
         .on('data', it => {
         csvData.push(it);
-        // try {
-        //     bitsService.save(
-        //         { timestamp: it.unix, symbol: it.symbol, open: it.open, high: it.high, low: it.low, close: it.close, volume_USD: it['Volume USD'], volume_BTC: it['Volume BTC'] },
-        //         Exchange
-        //     )
-        // } catch (e) {
-        //     throw e
-        // }
     }).on('end', () => {
         try {
-            bitsService_1.default.saveList(csvData.map(it => ({ timestamp: it.unix, symbol: it.symbol, open: it.open, high: it.high, low: it.low, close: it.close, volume_USD: it['Volume USD'], volume_BTC: it['Volume BTC'] })), Exchange);
+            bitsService_1.default.saveList(csvData.map(it => ({ timestamp: it.unix || it['Unix Timestamp'], symbol: it.symbol || it.Symbol, open: it.open || it.Open, high: it.high || it.High, low: it.low || it.Low, close: it.close || it.Close, volume_USD: it['Volume USD'], volume_BTC: it['Volume BTC'] })), Exchange);
         }
         catch (e) {
             throw e;
@@ -75,17 +67,19 @@ const start = () => __awaiter(void 0, void 0, void 0, function* () {
         // addOilPrice()
         // addBits('docs/Bitfinex_BTCUSD_1h.csv', Bitfinex)
         // addBits('docs/Bitstamp_BTCUSD_1h.csv', Bitstamp)
-        // addBits('docs/Bittrex_BTCUSD_1h.csv', Bittrex)
+        addBits('docs/Bittrex_BTCUSD_1h.csv', bittrex_1.default);
         // addBits('docs/gemini_BTCUSD_1hr.csv', Gemini)
         // addBits('docs/Poloniex_BTCUSDT_1h.csv', Poloniex)
         // addBits('docs/Itbit_BTCUSD_1h.csv', Itbit)
-        // app.listen(port, () => {
-        // })
+        app.listen(port, () => {
+        });
+        app.get('/', (req, res) => {
+        });
     }
     catch (e) {
         console.log(e);
         process.exit(1);
     }
 });
-// start()
+start();
 //# sourceMappingURL=index.js.map
