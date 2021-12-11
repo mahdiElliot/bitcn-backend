@@ -20,7 +20,7 @@ import Itbit from "./models/itbit"
 const port = process.env.PORT || 8081
 
 const app = express()
-console.log(process.env.COIN_DB_USER)
+
 // middlewares
 app.use(express.json())
 
@@ -77,7 +77,7 @@ const start = async () => {
 
         })
         app.get('/', (req, res) => {
-            res.status(200).send("hello world!");
+           
         })
     } catch (e) {
         console.log(e)
