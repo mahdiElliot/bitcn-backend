@@ -17,7 +17,7 @@ const saveList = async (list: oilPrice[]) => {
     }
 }
 
-const getAll = async () => {
+const findAll = async () => {
     let data = []
     try {
         data = await OilPrice.findAll()
@@ -29,5 +29,5 @@ const getAll = async () => {
 
 export default {
     saveList,
-    getAll
+    findAll
 }

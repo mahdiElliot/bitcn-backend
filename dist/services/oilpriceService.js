@@ -27,7 +27,7 @@ const saveList = (list) => __awaiter(void 0, void 0, void 0, function* () {
         throw new errors_1.default.InternalError(error_english_1.default.database_error());
     }
 });
-const getAll = () => __awaiter(void 0, void 0, void 0, function* () {
+const findAll = () => __awaiter(void 0, void 0, void 0, function* () {
     let data = [];
     try {
         data = yield oilprice_1.default.findAll();
@@ -39,6 +39,6 @@ const getAll = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.default = {
     saveList,
-    getAll
+    findAll
 };
 //# sourceMappingURL=oilpriceService.js.map
