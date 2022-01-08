@@ -37,8 +37,10 @@ const save = async (item: candle) => {
 
 const findAll = async (offset: number = 1, limit: number = 0) => {
     let data = []
+    const order: any =[['timestampp', 'DESC']]
     try {
-        data = limit === 0 ? await Candle.findAll() : await Candle.findAll({ offset, limit })
+        data = limit === 0 ? await Candle.findAll({ order }) :
+            await Candle.findAll({ offset, limit, order })
     } catch (e) {
         throw new Errors.InternalError(errorMsgs.database_error())
     }
