@@ -43,7 +43,7 @@ router.get('/fastpaper', (req, res) => {
     fastpaperService.findAll(page, Number(limit || 0), transfer === 'buy').then(data => {
         res.status(statusCodes.SUCCESSFUL).send({ total: data.length, data })
     }).catch((e: any) => {
-        res.status(e.status).send(e) 
+        res.status(e.status).send(e)
     })
 })
 export default router
