@@ -35,10 +35,10 @@ const save = async (item: candle) => {
     }
 }
 
-const findAll = async () => {
+const findAll = async (offset: number, limit: number) => {
     let data = []
     try {
-        data = await Candle.findAll()
+        data = await Candle.findAll({offset, limit})
     } catch (e) {
         throw new Errors.InternalError(errorMsgs.database_error())
     }

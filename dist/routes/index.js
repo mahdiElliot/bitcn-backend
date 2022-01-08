@@ -14,7 +14,9 @@ router.get('/prices', (req, res) => {
     });
 });
 router.get('/candleinfo', (req, res) => {
-    candleService_1.default.findAll().then(data => {
+    const limit = Number(req.query.limit) || 20;
+    const page = req.params.page || 1;
+    candleService_1.default.findAll(page, limit).then(data => {
         res.status(status_codes_1.default.SUCCESSFUL).send(data);
     });
 });
