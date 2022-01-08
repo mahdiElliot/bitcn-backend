@@ -11,10 +11,10 @@ router.get('/prices', (req, res) => {
 })
 
 router.get('/candleinfo', (req, res) => {
-    const limit = Number(req.query.limit) || 20
-    const page = Number(req.query.page)|| 1
+    const limit = Number(req.query.limit) === 0 ? 0 : Number(req.query.limit) || 20
+    const page = Number(req.query.page) || 1
     candleService.findAll(page, limit).then(data => {
-        res.status(statusCodes.SUCCESSFUL).send(data)
+        res.status(statusCodes.SUCCESSFUL).send({ total: data.length, data })
     })
 })
 
