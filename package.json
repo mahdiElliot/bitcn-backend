@@ -15,11 +15,6 @@
         "type": "git",
         "url": "git+https://github.com/mahdiElliot/troff-online.git"
     },
-    "keywords": [
-        "troff",
-        "neatroff",
-        "teqn"
-    ],
     "author": "Mahdi",
     "license": "ISC",
     "bugs": {
