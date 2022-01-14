@@ -2,6 +2,7 @@ import { candle } from '../models/candle'
 import Candle from '../models/candle'
 import Errors from '../utils/errors'
 import errorMsgs from '../utils/error-messages/error-english'
+import {Op} from 'sequelize'
 
 const saveList = async (list: candle[]) => {
     try {
@@ -35,16 +36,27 @@ const save = async (item: candle) => {
     }
 }
 
-const findAll = async (offset: number = 1, limit: number = 0) => {
+const findAll = async (offset: number = 1, limit: number = 0, startRange: number = 0, endRange: number = 0) => {
     let data = []
-    const order: any =[['timestampp', 'DESC']]
+    let total = 0
+    const order: any = [['timestampp', 'DESC']]
     try {
-        data = limit === 0 ? await Candle.findAll({ order }) :
-            await Candle.findAll({ offset, limit, order })
+        let cond: any = {}
+        if (startRange) {
+            if (endRange)
+                cond = { timestampp: { [Op.gte]: startRange, [Op.lte]: endRange } }
+            else
+                cond = { timestampp: { [Op.gte]: startRange } }
+        } else if (endRange)
+            cond = { timestampp: { [Op.lte]: endRange } }
+
+        const d = await Candle.findAll({ order, where: cond })
+        total = d.length
+        data = limit ? d.slice((offset - 1) * limit, offset * limit - 1) : d
     } catch (e) {
         throw new Errors.InternalError(errorMsgs.database_error())
     }
-    return data.map(it => ({ timestamp: it.timestampp, market: it.market, open: it.openp, close: it.closep, low: it.low, high: it.high, volume: it.volume, usdvol: it.usdvol } as candle))
+    return { total, data: data.map(it => ({ timestamp: it.timestampp, market: it.market, open: it.openp, close: it.closep, low: it.low, high: it.high, volume: it.volume, usdvol: it.usdvol } as candle)) }
 }
 
 export default {
