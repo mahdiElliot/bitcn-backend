@@ -20,7 +20,7 @@ const app = express()
 
 // middlewares
 app.use(express.json())
-app.use('/api', routes)
+app.use(process.env.mode === 'dev' ? '/api' : '/', routes)
 
 const initDatabaseTables = () => {
     functions.addOilPrice(oilPriceService)
