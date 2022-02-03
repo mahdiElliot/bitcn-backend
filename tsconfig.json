@@ -1,11 +1,13 @@
 {
     "compilerOptions": {
+        "target": "ES2018",
         "module": "commonjs",
         "esModuleInterop": true,
-        "target": "es6",
         "allowJs": true,
         "moduleResolution": "node",
         "sourceMap": true,
+		"noEmit": true,
+		"experimentalDecorators": true,
         "outDir": "dist",
         "baseUrl": "",
         "paths": {
