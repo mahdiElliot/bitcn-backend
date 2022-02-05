@@ -66,10 +66,10 @@ const Trade = sequelize.define('trade', {
     tradecount: {
         type: DataTypes.BIGINT,
     },
-    MA50: {
+    MA_50: {
         type: DataTypes.DOUBLE
     },
-    MA21: {
+    MA_21: {
         type: DataTypes.DOUBLE
     },
     slowk: {
@@ -85,6 +85,9 @@ const Trade = sequelize.define('trade', {
         type: DataTypes.DOUBLE
     },
     j: {
+        type: DataTypes.DOUBLE
+    },
+    SMMA_21: {
         type: DataTypes.DOUBLE
     },
     upper: {
