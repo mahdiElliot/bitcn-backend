@@ -26,7 +26,7 @@ const findAll = async (offset: number = 1, limit: number = 0, startRange: number
     return {
         total, data: data.map(it => (
             {
-                timestamp: it.unix,
+                timestamp: Number(it.unix),
                 open: it.open,
                 close: it.close,
                 low: it.low,
