@@ -40,7 +40,10 @@ const findAll = async (offset: number = 1, limit: number = 0, startRange: number
                 j: it.j,
                 d: it.d,
                 profit: it.profit,
-                profit_percent: it.profit_percent
+                profit_percent: it.profit_percent,
+                SMMA_21: it.SMMA_21,
+                MA_50: it.MA_50,
+                MA_21: it.MA_21
             } as trade))
     }
 }

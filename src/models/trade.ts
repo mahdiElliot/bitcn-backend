@@ -19,6 +19,9 @@ export type trade = {
     d: number
     profit: number
     profit_percent: number
+    SMMA_21: number
+    MA_50: number
+    MA_21: number
 }
 
 const Trade = sequelize.define('trade', {
