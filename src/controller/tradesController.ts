@@ -43,7 +43,7 @@ const newtrades = (req: Request, res: Response) => {
                 SMMA_21: it.SMMA_21,
                 MA_50: it.MA_50,
                 MA_21: it.MA_21
-            } as trade))
+            } as trade)).sort((a, b) => (a['timestamp'] >= b['timestamp'] ? -1 : 1))
     })
 }
 
