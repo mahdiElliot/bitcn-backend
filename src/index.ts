@@ -14,6 +14,7 @@ import Bitstamp from "./models/bitstamp"
 import Bittrex from "./models/bittrex"
 import Poloniex from "./models/poloniex"
 import Itbit from "./models/itbit"
+import requestToken from "./middleware/requestToken"
 
 const port = process.env.PORT || 8081
 
@@ -21,6 +22,7 @@ const app = express()
 
 // middlewares
 app.use(express.json())
+app.use(requestToken)
 app.use('/api', routes)
 app.use(express.urlencoded({extended: true}))
 // app.use(cors())
