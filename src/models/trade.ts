@@ -17,6 +17,9 @@ export type trade = {
     k: number
     j: number
     d: number
+    middle: number
+    lower: number
+    upper: number
     profit: number
     profit_percent: number
     SMMA_21: number
