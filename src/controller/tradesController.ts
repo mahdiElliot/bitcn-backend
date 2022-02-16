@@ -29,7 +29,7 @@ const newtrades = (req: Request, res: Response) => {
     })
     if (limit)
         data = data.slice((page - 1) * limit, page * limit - 1)
-        
+
     res.status(statusCodes.SUCCESSFUL).send({
         total: data.length, data: data.map(it => (
             {
@@ -54,7 +54,7 @@ const newtrades = (req: Request, res: Response) => {
                 SMMA_21: it.SMMA_21,
                 MA_50: it.MA_50,
                 MA_21: it.MA_21
-            } as trade)).sort((a, b) => (a.timestamp >= b.timestamp ? -1 : 1))
+            } as trade))
     })
 }
 
