@@ -17,11 +17,19 @@ const trades = (req: Request, res: Response) => {
 }
 
 const newtrades = (req: Request, res: Response) => {
-    const limit = req.query.limit
+    const limit = Number(req.query.limit) || 0
     const page = Number(req.query.page || 1)
     const startTime = Number(req.query.start || 0)
     const endTime = Number(req.query.end || 0)
-    const data = functions.getAllFile('docs/Binance_BTCUSDT_minute_sorted_trades.csv')
+    let data = functions.getAllFile('docs/Binance_BTCUSDT_minute_sorted_trades.csv').filter(it => {
+        let c = Number(it.unix) >= startTime
+        if (endTime)
+            c = c && Number(it.unix) <= endTime
+        return c
+    })
+    if (limit)
+        data = data.slice((page - 1) * limit, page * limit - 1)
+        
     res.status(statusCodes.SUCCESSFUL).send({
         total: data.length, data: data.map(it => (
             {
