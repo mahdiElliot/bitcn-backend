@@ -13,14 +13,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/mahdiElliot/troff-online.git"
+        "url": "git+https://github.com/mahdiElliot/bitcn-backend.git"
     },
     "author": "Mahdi",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/mahdiElliot/troff-online/issues"
+        "url": "https://github.com/mahdiElliot/bitcn-backend/issues"
     },
-    "homepage": "https://github.com/mahdiElliot/troff-online#readme",
+    "homepage": "https://github.com/mahdiElliot/bitcn-backend#readme",
     "dependencies": {
         "cookie-parser": "^1.4.5",
         "dotenv": "^10.0.0",
