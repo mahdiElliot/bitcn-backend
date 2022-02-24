@@ -25,7 +25,7 @@ const app = express()
 app.use(express.json())
 app.use(requestToken)
 app.use(busbody({
-    highWaterMark: 5 * 1024 * 1024
+    highWaterMark: 2 * 1024 * 1024
 }))
 
 app.use('/api', routes)
