@@ -15,6 +15,7 @@ import Bittrex from "./models/bittrex"
 import Poloniex from "./models/poloniex"
 import Itbit from "./models/itbit"
 import requestToken from "./middleware/requestToken"
+import busbody from 'connect-busboy'
 
 const port = process.env.PORT || 8081
 
@@ -23,6 +24,10 @@ const app = express()
 // middlewares
 app.use(express.json())
 app.use(requestToken)
+app.use(busbody({
+    highWaterMark: 5 * 1024 * 1024
+}))
+
 app.use('/api', routes)
 app.use(express.urlencoded({extended: true}))
 // app.use(cors())
