@@ -2,7 +2,7 @@ import { candle } from '../models/candle'
 import Candle from '../models/candle'
 import Errors from '../utils/errors'
 import errorMsgs from '../utils/error-messages/error-english'
-import {Op} from 'sequelize'
+import { Op } from 'sequelize'
 
 const saveList = async (list: candle[]) => {
     try {

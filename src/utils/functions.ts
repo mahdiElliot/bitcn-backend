@@ -2,6 +2,8 @@ import request from 'request'
 import utils from './utils'
 import { oilPrice } from '../models/oilprice'
 import xlsx from 'xlsx'
+import { spawn } from 'child_process'
+import errors from './errors'
 
 export default {
     addOilPrice: (oilPriceService: any) => {
@@ -36,8 +38,21 @@ export default {
 
     },
 
-    getAllFile: (name: string) : any[] => {
-        const file = xlsx.readFile(name)
-        return xlsx.utils.sheet_to_json(file.Sheets[file.SheetNames[0]])
+    getAllFile: async (name: string, startDate: number, endDate: number) => {
+        let data: any[] = []
+        try {
+            const python = spawn('python3.8', ['partitionData.py', name, `${startDate}`, `${endDate}`])
+            const exitCode = await new Promise((resolve, reject) => {
+                python.on('close', resolve);
+            });
+            if (exitCode)
+                throw new errors.InternalError('cannot read file')
+            const file = xlsx.readFile('docs/proper-data.csv')
+            data = xlsx.utils.sheet_to_json(file.Sheets[file.SheetNames[0]])
+        } catch (e) {
+            throw new errors.InternalError('cannot read file')
+        }
+
+        return data
     }
 }
