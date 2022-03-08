@@ -46,6 +46,7 @@ const newtrades = (req: Request, res: Response) => {
                     k: it.k,
                     j: it.j,
                     d: it.d,
+                    kdj_cross: it.kdj_cross,
                     middle: it.middle,
                     lower: it.lower,
                     upper: it.upper,
@@ -56,6 +57,7 @@ const newtrades = (req: Request, res: Response) => {
                     MA_21: it.MA_21
                 } as trade))
         })
+
     }).catch((e: any) => {
         res.status(e.status).send(e)
     })
