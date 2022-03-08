@@ -31,31 +31,20 @@ const newtrades = (req: Request, res: Response) => {
     functions.getAllFile('docs/Binance_BTCUSDT_minute_sorted_trades.csv', startTime, endTime).then((d: any[]) => {
         const data = limit ? d.slice((page - 1) * limit, page * limit - 1) : [...d]
         res.status(statusCodes.SUCCESSFUL).send({
-            total: data.length, data: data.map(it => (
-                {
+            total: data.length, data: data.map(it => {
+                const t =  {
                     timestamp: Number(it.unix),
-                    open: it.open,
-                    close: it.close,
-                    low: it.low,
-                    high: it.high,
-                    volume_btc: it['Volume BTC'], volume_usdt: it['Volume USDT'],
                     buy: it.buy_signal == 1, sell: it.sell_signal == 1,
-                    tradecount: it.tradecount,
-                    slowk: it.slowk,
-                    slowd: it.slowd,
-                    k: it.k,
-                    j: it.j,
-                    d: it.d,
-                    kdj_cross: it.kdj_cross,
-                    middle: it.middle,
-                    lower: it.lower,
-                    upper: it.upper,
-                    profit: it.profit,
-                    profit_percent: it.profit_percent,
-                    SMMA_21: it.SMMA_21,
-                    MA_50: it.MA_50,
-                    MA_21: it.MA_21
-                } as trade))
+                    ...it
+                } as any
+                delete t.buy_signal
+                delete t.sell_signal
+                delete t.unix
+                delete t.__EMPTY
+                delete t.date
+                delete t.symbol
+                return t
+            })
         })
 
     }).catch((e: any) => {
