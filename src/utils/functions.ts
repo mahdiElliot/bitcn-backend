@@ -38,10 +38,32 @@ export default {
 
     },
 
+    saveFileToDB: async (name: string) => {
+        try {
+            const start = 0, end = 9000
+            const python = spawn('python3.8', ['python/readCSV.py', `docs/${name}`, `${start}`, `${end}`])
+
+            const data = await new Promise((resolve, reject) => {
+                python.stdout.on('data', resolve)
+                python.stderr.on('data', reject)
+            })
+
+            const x: any[] = JSON.parse(data.toString())
+            if (!x.length)
+                throw new errors.InternalError('cannot read file')
+
+            const tableName = name.replace('.csv', '')
+
+        } catch(e) {
+            throw e
+        }
+
+    },
+
     getAllFile: async (name: string, startDate: number, endDate: number) => {
         let data: any[] = []
         try {
-            const python = spawn('python3.8', ['partitionData.py', name, `${startDate}`, `${endDate}`])
+            const python = spawn('python3.8', ['python/partitionData.py', name, `${startDate}`, `${endDate}`])
             const exitCode = await new Promise((resolve, reject) => {
                 python.on('close', resolve);
             });
@@ -50,7 +72,7 @@ export default {
             const file = xlsx.readFile('docs/proper-data.csv')
             data = xlsx.utils.sheet_to_json(file.Sheets[file.SheetNames[0]])
         } catch (e) {
-            throw new errors.InternalError('cannot read file')
+            throw e
         }
 
         return data

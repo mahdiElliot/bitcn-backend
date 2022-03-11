@@ -1,7 +1,10 @@
 import express from "express"
+import bodyParser from 'body-parser'
 // import cors from 'cors'
 import dotenv from 'dotenv'
 dotenv.config()
+
+import mongoose from './db/mongoose'
 
 import routes from './routes'
 
@@ -22,7 +25,8 @@ const port = process.env.PORT || 8081
 const app = express()
 
 // middlewares
-app.use(express.json())
+app.use(bodyParser.json({limit: '50mb'}))
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
 app.use(requestToken)
 app.use(busbody({
     highWaterMark: 2 * 1024 * 1024
@@ -44,6 +48,8 @@ const initDatabaseTables = () => {
 const start = async () => {
     try {
         await sequelize.sync()
+
+        await mongoose()
 
         // initDatabaseTables()
         app.get('/', (req, res) => {
