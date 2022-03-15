@@ -10,12 +10,13 @@ const trades = (req: Request, res: Response) => {
     const page = Number(req.query.page) || 1
     const startTime = Number(req.query.start) || 0
     const endTime = Number(req.query.end) || 0
+    const key = Number(req.query.key) || 0
     // tradeService.findAll(page, limit, startTime, endTime).then(data => {
     //     res.status(statusCodes.SUCCESSFUL).send(data)
     // }).catch((e: any) => {
     //     res.status(e.status).send(e)
     // })
-    tradesService.findAll(page, limit, startTime, endTime).then(data => {
+    tradesService.findAll(page, limit, startTime, endTime, key).then(data => {
         res.status(statusCodes.SUCCESSFUL).send(data)
     }).catch((e: any) => {
         res.status(e.status).send(e)
@@ -29,7 +30,6 @@ const saveTrades = (req: Request, res: Response) => {
         return
     }
     const data = typeof (d.data) === 'string' ? JSON.parse(d.data) : d.data
-
     if (!data || !data.length) {
         res.status(statusCodes.BAD_REQUEST).send({ message: 'invalid data' })
         return

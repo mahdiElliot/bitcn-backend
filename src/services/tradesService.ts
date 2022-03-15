@@ -10,7 +10,7 @@ const saveList = async (data: any[]) => {
     }
 }
 
-const findAll = async (offset: number = 1, limit: number = 100, startRange: number = 0, endRange: number = 0) => {
+const findAll = async (offset: number = 1, limit: number = 1000, startRange: number = 0, endRange: number = 0, key: number) => {
     let data = []
     try {
         let filter: any = {}
@@ -22,6 +22,7 @@ const findAll = async (offset: number = 1, limit: number = 100, startRange: numb
         } else if (endRange)
             filter = { unix: { $lte: endRange } }
 
+        filter = { ...filter, key }
         data = await Trade.find(filter, null, { sort: { unix: 1 }, limit, skip: (offset - 1) * limit }).exec()
 
     } catch (e) {
@@ -42,6 +43,7 @@ const findAll = async (offset: number = 1, limit: number = 100, startRange: numb
             delete t.date
             delete t.symbol
             delete t._id
+            delete t.key
 
 
             return t

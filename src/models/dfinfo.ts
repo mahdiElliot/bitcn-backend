@@ -1,16 +1,24 @@
 import mongoose from 'mongoose'
 
 const DfInfoSchema = new mongoose.Schema({
-    Title: {
-        type: String,
+    key: {
+        type: Number,
         unique: true,
+        required: true,
+    },
+    'Start Date': {
+        type: String,
         required: true
     },
-    Value: {
+    'End Date': {
         type: String,
-        required: false
+        requried: true,
+    },
+    Symbol: {
+        type: String,
+        required: true
     }
-}, {versionKey: false, _id: false, id: false })
+}, { strict: false, versionKey: false,id: false })
 
 const DfInfo = mongoose.model('dfinfo', DfInfoSchema)
 

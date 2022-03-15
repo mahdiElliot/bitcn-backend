@@ -3,8 +3,11 @@ import mongoose from 'mongoose'
 const tradeSchema = new mongoose.Schema({
     unix: {
         type: Number,
-        unique: true,
         required: true
+    },
+    key: {
+        type: Number,
+        required: true,
     },
     date: {
         type: String,
@@ -54,7 +57,12 @@ const tradeSchema = new mongoose.Schema({
     btc: {
         type: Number
     },
-}, { strict: false, versionKey: false, _id: false })
+}, { strict: false, versionKey: false, _id: false, id: false }).index({
+    unix: 1,
+    key: 1
+}, {
+    unique: true
+})
 
 const Trade = mongoose.model('trades', tradeSchema)
 

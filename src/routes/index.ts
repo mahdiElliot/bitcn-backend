@@ -35,29 +35,38 @@ router.post('/info', (req, res) => {
         return
     }
 
-    const data = typeof (info.data) === 'string' ? JSON.parse(info.data) : info.data
+    const data: any[] = typeof (info.data) === 'string' ? JSON.parse(info.data) : info.data
     if (!data || !data.length) {
         res.status(statusCodes.BAD_REQUEST).send({ message: 'invalid data' })
         return
     }
 
-    DfInfo.insertMany(data).then(data => {
+    const obj= {} as any
+    data.forEach(it => {
+        const k = String(it.Title).trim()
+        obj[k] = k === 'key' ? Number(it.Value) : it.Value
+    })
+
+
+    DfInfo.create(obj).then(data => {
         res.status(statusCodes.SUCCESSFUL).send({ message: 'saved' })
     }).catch(e => {
-        res.status(statusCodes.INTERNAL_SERVER).send({ message: e.message || 'failed to save' })
-    })
+            res.status(statusCodes.INTERNAL_SERVER).send({ message: e.message || 'failed to save' })
+        })
 
 })
 
 router.get('/info', (req, res) => {
     DfInfo.find().exec().then((data) => {
-        res.status(statusCodes.SUCCESSFUL).send({data: data.map(it => {
-            const t = {
-                ...it._doc
-            }
-            delete t._id
-            return t
-        }), total: data.length})
+        res.status(statusCodes.SUCCESSFUL).send({
+            data: data.map(it => {
+                const t = {
+                    ...it._doc
+                }
+                delete t._id
+                return t
+            }), total: data.length
+        })
     }).catch(e => {
         res.status(e.status).send(e)
     })
@@ -65,7 +74,7 @@ router.get('/info', (req, res) => {
 
 router.delete('/info', (req, res) => {
     DfInfo.deleteMany().exec().then(() => {
-        res.status(statusCodes.SUCCESSFUL).send({message: 'all deleted'})
+        res.status(statusCodes.SUCCESSFUL).send({ message: 'all deleted' })
     }).catch(e => {
         res.status(statusCodes.INTERNAL_SERVER).send({ message: e.message || 'failed to delete' })
     })
