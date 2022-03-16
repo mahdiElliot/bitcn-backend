@@ -47,13 +47,10 @@ router.post('/info', (req, res) => {
         obj[k] = k === 'key' ? Number(it.Value) : it.Value
     })
 
-    console.log(obj)
-
 
     DfInfo.create(obj).then(data => {
         res.status(statusCodes.SUCCESSFUL).send({ message: 'saved' })
     }).catch(e => {
-        console.log(e)
         res.status(statusCodes.INTERNAL_SERVER).send({ message: e.message || 'failed to save' })
     })
 
