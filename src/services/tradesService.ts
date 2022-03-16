@@ -51,9 +51,9 @@ const findAll = async (offset: number = 1, limit: number = 1000, startRange: num
     }
 }
 
-const deleteAll = async () => {
+const deleteAll = async (key: number) => {
     try {
-        await Trade.deleteMany().exec()
+        await Trade.deleteMany({ key }).exec()
     } catch (e) {
         throw new Errors.InternalError(errorMsgs.database_error())
     }

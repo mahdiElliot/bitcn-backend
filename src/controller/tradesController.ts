@@ -43,7 +43,8 @@ const saveTrades = (req: Request, res: Response) => {
 }
 
 const deleteTrades = (req: Request, res: Response) => {
-    tradesService.deleteAll().then(() => {
+    const key =Number( req.query.key) || 0
+    tradesService.deleteAll(key).then(() => {
         res.status(statusCodes.SUCCESSFUL).send({message: 'all deleted'})
     }).catch(e => {
         res.status(statusCodes.INTERNAL_SERVER).send({ message: e.message || 'failed to delete' })
