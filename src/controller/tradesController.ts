@@ -38,7 +38,7 @@ const saveTrades = (req: Request, res: Response) => {
     tradesService.saveList(data).then(data => {
         res.status(statusCodes.SUCCESSFUL).send({ message: 'saved' })
     }).catch(e => {
-        res.status(statusCodes.INTERNAL_SERVER).send({ message: e.message || 'failed to save' })
+        res.status(statusCodes.INTERNAL_SERVER).send(e)
     })
 }
 

@@ -24,6 +24,19 @@ router.post('/trades', tradesController.saveTrades)
 router.delete('/trades', tradesController.deleteTrades)
 router.get('/newtrades', tradesController.newtrades)
 
+router.post('/dataUpdated', (req, res) => {
+    functions.saveInfoToDB().then(data => {
+        if (data)
+            functions.saveTradeToDB().then(data => {
+                res.status(statusCodes.SUCCESSFUL).send({ message: 'saved' })
+            }).catch(e => {
+                res.status(statusCodes.INTERNAL_SERVER).send({ message: e.message || 'failed to save trade' })
+            })
+    }).catch(e => {
+        res.status(statusCodes.INTERNAL_SERVER).send({ message: e.message || 'failed to save info' })
+    })
+})
+
 router.post("/uploadCSV", uploadController.upload)
 
 
@@ -58,14 +71,29 @@ router.post('/info', (req, res) => {
 
 router.get('/info', (req, res) => {
     DfInfo.find().exec().then((data) => {
+        let nData = data.map(it => {
+            const t = {
+                ...it._doc
+            }
+            delete t._id
+            return t
+        })
+        let headers = Object.keys(nData[0])
+        nData.forEach(it => {
+            if (headers.length < Object.keys(it).length)
+                headers = Object.keys(it)
+        })
+       nData =  nData.map(it => {
+            const ret: any = {...it}
+            const keys = Object.keys(it)
+            headers.forEach(k => {
+                if (!keys.includes(k))
+                    ret[k] = '0'
+            })
+            return ret
+        })
         res.status(statusCodes.SUCCESSFUL).send({
-            data: data.map(it => {
-                const t = {
-                    ...it._doc
-                }
-                delete t._id
-                return t
-            }), total: data.length
+            data: nData, total: data.length
         })
     }).catch(e => {
         res.status(e.status).send(e)

@@ -4,6 +4,8 @@ import { oilPrice } from '../models/oilprice'
 import xlsx from 'xlsx'
 import { spawn } from 'child_process'
 import errors from './errors'
+import DfInfo from '../models/dfinfo'
+import tradesService from '../services/tradesService'
 
 export default {
     addOilPrice: (oilPriceService: any) => {
@@ -54,12 +56,62 @@ export default {
 
             const tableName = name.replace('.csv', '')
 
-        } catch(e) {
+        } catch (e) {
             throw e
         }
 
     },
 
+    saveInfoToDB: async () => {
+        try {
+            const start = 0, end = 20
+            const python = spawn('python3.8', ['python/readCSV.py', `docs/dfinfo.csv`, `${start}`, `${end}`])
+
+            const data = await new Promise((resolve, reject) => {
+                python.stdout.on('data', resolve)
+                python.stderr.on('data', reject)
+            })
+
+            const x: any[] = JSON.parse(data.toString())
+            const obj = {} as any
+
+            x.forEach(it => {
+                const k = String(it.Title).trim()
+                obj[k] = k === 'key' ? Number(it.Value) : it.Value
+            })
+
+            await DfInfo.create(x)
+
+            return true
+
+        } catch (e) {
+            throw e
+        }
+    },
+    saveTradeToDB: async () => {
+        try {
+            let start = 0, end = 9000
+            while (true) {
+                const python =
+                    spawn('python3.8', ['python/readCSV.py', `docs/Binance_BTCUSDT_minute_sorted_trades.csv`, `${start}`, `${end}`])
+
+                const data = await new Promise((resolve, reject) => {
+                    python.stdout.on('data', resolve)
+                    python.stderr.on('data', reject)
+                })
+
+                const x: any[] = JSON.parse(data.toString())
+                if (!x.length) return true
+
+                await tradesService.saveList(x)
+                start = end
+                end += 9000
+            }
+
+        } catch (e) {
+            throw e
+        }
+    },
     getAllFile: async (name: string, startDate: number, endDate: number) => {
         let data: any[] = []
         try {

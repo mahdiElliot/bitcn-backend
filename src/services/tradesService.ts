@@ -6,7 +6,7 @@ const saveList = async (data: any[]) => {
     try {
         await Trade.insertMany(data)
     } catch (e) {
-        throw new Errors.InternalError(errorMsgs.database_error())
+        throw e
     }
 }
 
