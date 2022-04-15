@@ -78,7 +78,7 @@ router.get('/info', (req, res) => {
             delete t._id
             return t
         })
-        let headers = Object.keys(nData[0]).sort()
+        let headers = Object.keys(nData[0])
         nData.forEach(it => {
             if (headers.length < Object.keys(it).length)
                 headers = Object.keys(it)
