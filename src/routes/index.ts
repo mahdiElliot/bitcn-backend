@@ -78,17 +78,19 @@ router.get('/info', (req, res) => {
             delete t._id
             return t
         })
-        let headers = Object.keys(nData[0])
+        let headers = Object.keys(nData[0]).sort()
         nData.forEach(it => {
             if (headers.length < Object.keys(it).length)
                 headers = Object.keys(it)
         })
        nData =  nData.map(it => {
-            const ret: any = {...it}
+            const ret: any = {}
             const keys = Object.keys(it)
             headers.forEach(k => {
                 if (!keys.includes(k))
                     ret[k] = '0'
+                else
+                    ret[k] = it[k]
             })
             return ret
         })
