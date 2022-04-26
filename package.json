@@ -34,7 +34,8 @@
         "pg-promise": "^10.11.0",
         "request": "^2.88.2",
         "sequelize": "^6.12.0-beta.1",
-        "xlsx": "^0.18.0"
+        "xlsx": "^0.18.0",
+        "winston": "^3.6.0"
     },
     "devDependencies": {
         "@types/connect-busboy": "^1.0.0",

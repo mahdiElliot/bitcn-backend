@@ -19,6 +19,7 @@ import Poloniex from "./models/poloniex"
 import Itbit from "./models/itbit"
 import requestToken from "./middleware/requestToken"
 import busbody from 'connect-busboy'
+import winston from 'winston'
 
 const port = process.env.PORT || 8081
 
@@ -44,6 +45,20 @@ const initDatabaseTables = () => {
     functions.addBits('docs/Poloniex_BTCUSDT_1h.csv', Poloniex, bitsService)
     functions.addBits('docs/Itbit_BTCUSD_1h.csv', Itbit, bitsService)
 }
+
+
+process.on('uncaughtException', (ex) => {
+    winston.error(ex.message, ex)
+    process.exit(1)
+})
+
+process.on('unhandledRejection', (ex: any) => {
+    winston.error(ex.message, ex)
+    process.exit(1)
+})
+
+winston.add(new winston.transports.File({filename: 'w1'}))
+
 
 const start = async () => {
     try {

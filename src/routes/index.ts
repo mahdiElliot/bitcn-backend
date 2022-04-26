@@ -6,7 +6,7 @@ import tradesController from '../controller/tradesController'
 import uploadController from '../controller/uploadController'
 import functions from '../utils/functions'
 import DfInfo from '../models/dfinfo'
-
+import winston from 'winston'
 
 const router = app.Router()
 
@@ -42,6 +42,7 @@ router.post("/uploadCSV", uploadController.upload)
 
 
 router.post('/info', (req, res) => {
+    winston.info(`${req.body}`)
     const info = req.body
     if (!info.data) {
         res.status(statusCodes.BAD_REQUEST).send({ message: 'invalid data' })
