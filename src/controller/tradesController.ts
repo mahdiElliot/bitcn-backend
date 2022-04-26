@@ -18,22 +18,6 @@ const trades = (req: Request, res: Response) => {
     //     res.status(e.status).send(e)
     // })
     tradesService.findAll(page, limit, startTime, endTime, key).then(data => {
-        // let headers = Object.keys(data.data[0])
-        // data.data.forEach(it => {
-        //     if (headers.length < Object.keys(it).length)
-        //         headers = Object.keys(it)
-        // })
-        // data.data = data.data.map(it => {
-        //     const ret: any = {}
-        //     const keys = Object.keys(it)
-        //     headers.forEach(k => {
-        //         if (!keys.includes(k))
-        //             ret[k] = '0'
-        //         else
-        //             ret[k] = it[k]
-        //     })
-        //     return ret
-        // })
         res.status(statusCodes.SUCCESSFUL).send(data)
     }).catch((e: any) => {
         res.status(e.status).send(e)
