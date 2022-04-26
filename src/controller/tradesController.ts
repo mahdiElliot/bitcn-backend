@@ -4,6 +4,7 @@ import { Request, Response } from 'express'
 import statusCodes from '../utils/status-codes'
 import functions from '../utils/functions'
 import tradesService from '../services/tradesService'
+import winston from 'winston'
 
 const trades = (req: Request, res: Response) => {
     const limit = Number(req.query.limit) || 9000
@@ -17,6 +18,22 @@ const trades = (req: Request, res: Response) => {
     //     res.status(e.status).send(e)
     // })
     tradesService.findAll(page, limit, startTime, endTime, key).then(data => {
+        // let headers = Object.keys(data.data[0])
+        // data.data.forEach(it => {
+        //     if (headers.length < Object.keys(it).length)
+        //         headers = Object.keys(it)
+        // })
+        // data.data = data.data.map(it => {
+        //     const ret: any = {}
+        //     const keys = Object.keys(it)
+        //     headers.forEach(k => {
+        //         if (!keys.includes(k))
+        //             ret[k] = '0'
+        //         else
+        //             ret[k] = it[k]
+        //     })
+        //     return ret
+        // })
         res.status(statusCodes.SUCCESSFUL).send(data)
     }).catch((e: any) => {
         res.status(e.status).send(e)
@@ -43,9 +60,9 @@ const saveTrades = (req: Request, res: Response) => {
 }
 
 const deleteTrades = (req: Request, res: Response) => {
-    const key =Number( req.query.key) || 0
+    const key = Number(req.query.key) || 0
     tradesService.deleteAll(key).then(() => {
-        res.status(statusCodes.SUCCESSFUL).send({message: 'all deleted'})
+        res.status(statusCodes.SUCCESSFUL).send({ message: 'all deleted' })
     }).catch(e => {
         res.status(statusCodes.INTERNAL_SERVER).send({ message: e.message || 'failed to delete' })
     })

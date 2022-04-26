@@ -104,7 +104,6 @@ router.get('/info', (req, res) => {
 })
 
 router.delete('/info', (req, res) => {
-    winston.info('theeeeeeeee request')
     const key = Number(req.query.key) || 0
 
     DfInfo.deleteOne({ key }).exec().then(() => {
