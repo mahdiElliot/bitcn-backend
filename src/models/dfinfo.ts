@@ -6,6 +6,15 @@ const DfInfoSchema = new mongoose.Schema({
         unique: true,
         required: true,
     },
+    'Net profit': {
+        type: Number
+    },
+    'Net profit (%)': {
+        type: Number
+    },
+    'Percent Profitable':{
+        type: Number
+    },
     'Start Date': {
         type: String,
         required: true
