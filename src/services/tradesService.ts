@@ -34,7 +34,7 @@ const findAll = async (offset: number = 1, limit: number = 1000, startRange: num
             const t = {
                 timestamp: Number(it.unix),
                 buy: it.buy_signal == 1,
-                sell: it.sell_signal == 1,
+                sell: it.sell_signal == 1 || it.stoploss_signal == 1,
                 ...it._doc
             }
             delete t.unix
