@@ -37,8 +37,6 @@ const findAll = async (offset: number = 1, limit: number = 1000, startRange: num
                 sell: it.sell_signal == 1,
                 ...it._doc
             }
-            delete t.buy_signal
-            delete t.sell_signal
             delete t.unix
             delete t.date
             delete t.symbol
