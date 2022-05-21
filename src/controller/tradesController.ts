@@ -7,17 +7,15 @@ import tradesService from '../services/tradesService'
 import winston from 'winston'
 
 const trades = (req: Request, res: Response) => {
-    const limit = Number(req.query.limit) || 9000
+    const limit = Number(req.query.limit || 2000)
     const page = Number(req.query.page) || 1
     const startTime = Number(req.query.start) || 0
     const endTime = Number(req.query.end) || 0
     const key = Number(req.query.key) || 0
-    // tradeService.findAll(page, limit, startTime, endTime).then(data => {
-    //     res.status(statusCodes.SUCCESSFUL).send(data)
-    // }).catch((e: any) => {
-    //     res.status(e.status).send(e)
-    // })
-    tradesService.findAll(page, limit, startTime, endTime, key).then(data => {
+    const sort = String(req.query.sort || 'timestamp')
+    const asc = Number(req.query.asc || 1)
+    const filterTrades = Number(req.query.trades || 0)
+    tradesService.findAll(page, limit, startTime, endTime, key, sort, asc, filterTrades).then(data => {
         res.status(statusCodes.SUCCESSFUL).send(data)
     }).catch((e: any) => {
         res.status(e.status).send(e)

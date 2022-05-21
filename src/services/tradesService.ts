@@ -10,8 +10,10 @@ const saveList = async (data: any[]) => {
     }
 }
 
-const findAll = async (offset: number = 1, limit: number = 1000, startRange: number = 0, endRange: number = 0, key: number) => {
+const findAll = async (offset: number = 1, limit: number = 1000, startRange: number = 0, endRange: number = 0,
+    key: number, srt = 'timestamp', asc = 1, tradesFilter = 0) => {
     let data = []
+    let count = 0
     try {
         let filter: any = {}
         if (startRange) {
@@ -23,14 +25,25 @@ const findAll = async (offset: number = 1, limit: number = 1000, startRange: num
             filter = { unix: { $lte: endRange } }
 
         filter = { ...filter, key }
-        data = await Trade.find(filter, null, { sort: { unix: 1 }, limit, skip: (offset - 1) * limit }).exec()
-
+        if (tradesFilter)
+            filter = {
+                ...filter, $or: [
+                    { buy_signal: 1 },
+                    { sell_signal: 1 },
+                    { stoploss_signal: 1 }
+                ]
+            }
+        if (srt === 'timestamp') srt = 'unix'
+        const sort = {} as any
+        sort[srt] = asc
+        data = await Trade.find(filter, null).sort(sort).skip((offset - 1) * limit).limit(limit).exec()
+        count = await Trade.count({ key }).exec()
     } catch (e) {
         throw new Errors.InternalError(errorMsgs.database_error())
     }
 
     return {
-        total: data.length, data: data.map(it => {
+        total: count, data: data.map(it => {
             const t = {
                 timestamp: Number(it.unix),
                 buy: it.buy_signal == 1,
