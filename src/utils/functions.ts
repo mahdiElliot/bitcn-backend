@@ -21,7 +21,6 @@ export default {
                 const prices: any[] = data.data.prices
                 oilPriceService.saveList(prices.map(it => ({ ...it, created_at: Date.parse(it.created_at) } as oilPrice)))
             } else {
-                console.log(error)
                 process.exit(1)
             }
         })

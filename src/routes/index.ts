@@ -7,6 +7,8 @@ import uploadController from '../controller/uploadController'
 import functions from '../utils/functions'
 import DfInfo from '../models/dfinfo'
 import winston from 'winston'
+import { indicator } from '../models/indicator'
+import indicatorService from '../services/indicatorService'
 
 const router = app.Router()
 
@@ -42,7 +44,6 @@ router.post("/uploadCSV", uploadController.upload)
 
 
 router.post('/info', (req, res) => {
-    winston.info(`${req.body}`)
     const info = req.body
     if (!info.data) {
         res.status(statusCodes.BAD_REQUEST).send({ message: 'invalid data' })
@@ -107,9 +108,36 @@ router.delete('/info', (req, res) => {
     const key = Number(req.query.key) || 0
 
     DfInfo.deleteOne({ key }).exec().then(() => {
-        res.status(statusCodes.SUCCESSFUL).send({ message: 'all deleted' })
+        res.status(statusCodes.SUCCESSFUL).send({ message: 'deleted' })
     }).catch(e => {
         res.status(statusCodes.INTERNAL_SERVER).send({ message: e.message || 'failed to delete' })
+    })
+})
+
+router.post('/indicator', (req, res) => {
+    const obj: indicator = JSON.parse(req.body.data)
+
+    indicatorService.save(obj).then(_ => {
+        res.status(statusCodes.SUCCESSFUL).send({ message: 'saved' })
+    }).catch(e => {
+        res.status(statusCodes.INTERNAL_SERVER).send({ message: e.message || 'failed to save' })
+    })
+})
+
+router.get('/indicator', (req, res) => {
+    indicatorService.findAll().then(data => {
+        res.status(statusCodes.SUCCESSFUL).send(data)
+    }).catch(e => {
+        res.status(e.status).send(e)
+    })
+})
+
+router.delete('/indicator', (req, res) => {
+    const name = String(req.query.name || '')
+    indicatorService.deleteOne(name).then(_ => {
+        res.status(statusCodes.SUCCESSFUL).send({ message: 'deleted' })
+    }).catch(e => {
+        res.status(e.status).send(e)
     })
 })
 
