@@ -34,6 +34,7 @@ const findAll = async (offset: number = 1, limit: number = 0, startRange: number
                 volume_btc: it['Volume BTC'], volume_usdt: it['Volume USDT'],
                 buy: it.buy_signal == 1, sell: it.sell_signal == 1,
                 tradecount: it.tradecount,
+                trade_order: it.trade_order,
                 slowk: it.slowk,
                 slowd: it.slowd,
                 k: it.k,
