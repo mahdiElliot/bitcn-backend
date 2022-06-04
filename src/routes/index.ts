@@ -26,6 +26,8 @@ router.post('/trades', tradesController.saveTrades)
 router.delete('/trades', tradesController.deleteTrades)
 router.get('/newtrades', tradesController.newtrades)
 
+router.get('/findtrade', tradesController.findTrade)
+
 router.post('/dataUpdated', (req, res) => {
     functions.saveInfoToDB().then(data => {
         if (data)

@@ -62,6 +62,33 @@ const findAll = async (offset: number = 1, limit: number = 1000, startRange: num
     }
 }
 
+const findTrade = async (key: number, trade_order = 1) => {
+    let data = []
+    try {
+        data = await Trade.find({ key, trade_order }, null).exec()
+    } catch (e) {
+        throw new Errors.InternalError(errorMsgs.database_error())
+    }
+    return {
+        data: data.map(it => {
+            const t = {
+                timestamp: Number(it.unix),
+                buy: it.buy_signal == 1,
+                sell: it.sell_signal == 1 || it.stoploss_signal == 1,
+                ...it._doc
+            }
+            delete t.unix
+            delete t.date
+            delete t.symbol
+            delete t._id
+            delete t.key
+
+
+            return t
+        })
+    }
+}
+
 const deleteAll = async (key: number) => {
     try {
         await Trade.deleteMany({ key }).exec()
@@ -73,5 +100,6 @@ const deleteAll = async (key: number) => {
 export default {
     saveList,
     findAll,
+    findTrade,
     deleteAll
 }

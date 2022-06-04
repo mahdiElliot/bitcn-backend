@@ -22,6 +22,16 @@ const trades = (req: Request, res: Response) => {
     })
 }
 
+const findTrade = (req: Request, res: Response) => {
+    const trade_order = Number(req.query.trade_order || 1)
+    const key = Number(req.query.key)
+    tradesService.findTrade(key, trade_order).then(data => {
+        res.status(statusCodes.SUCCESSFUL).send(data)
+    }).catch((e: any) => {
+        res.status(e.status).send(e)
+    })
+}
+
 const saveTrades = (req: Request, res: Response) => {
     const d = req.body
     if (!d.data) {
@@ -90,5 +100,6 @@ export default {
     trades,
     newtrades,
     saveTrades,
-    deleteTrades
+    deleteTrades,
+    findTrade
 }
